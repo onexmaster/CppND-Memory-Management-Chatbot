@@ -20,7 +20,7 @@ ChatBot::ChatBot()
 // constructor WITH memory allocation
 ChatBot::ChatBot(std::string filename)
 {
-    std::cout << "ChatBot Constructor" << std::endl;
+    std::cout << "ChatBot Constructor creating an instance at memory location: " <<this<< std::endl;
     
     // invalidate data handles
     _chatLogic = nullptr;
@@ -32,7 +32,7 @@ ChatBot::ChatBot(std::string filename)
 // destructor
 ChatBot::~ChatBot()
 {
-    std::cout << "ChatBot Destructor" << std::endl;
+    std::cout << "ChatBot Destructor deleting the instance present at memory location: "<<this<< std::endl;
 
     // deallocate heap memory
     if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
@@ -48,7 +48,7 @@ ChatBot::~ChatBot()
 //copy constructor
 ChatBot::ChatBot(const ChatBot &source)
 {
-    std::cout<< "Copying the contents of "<< &source <<" to "<<this<<std::endl;
+    std::cout<< "Copying the contents of "<< &source <<" to "<<this<<" using ChatBot Copy operator"<<std::endl;
     _chatLogic=source._chatLogic;
     _rootNode=source._rootNode;
     _image=new wxBitmap(*source._image);
@@ -57,7 +57,7 @@ ChatBot::ChatBot(const ChatBot &source)
 //copy assignment operator
 ChatBot &ChatBot::operator=(const ChatBot &source)
 {
-    std::cout<< "Assigning the contents of "<< &source <<" to "<<this<<std::endl;
+    std::cout<< "Assigning the contents of "<< &source <<" to "<<this<<" using ChatBot Copy Assignmnet operator"<<std::endl;
     //do not self assign 
     if(this == &source)
         return *this;
@@ -76,7 +76,7 @@ ChatBot &ChatBot::operator=(const ChatBot &source)
 //move constructor
 ChatBot::ChatBot(ChatBot &&source)
 {
-    std::cout << "Moving the contents of " << &source << " to  " << this << std::endl;
+    std::cout << "Moving the contents of " << &source << " to  " << this <<" using ChatBot Move Constructor"<< std::endl;
     //move the contents
     _chatLogic = source._chatLogic;
     _rootNode = source._rootNode;
@@ -90,7 +90,7 @@ ChatBot::ChatBot(ChatBot &&source)
 //move assignment operator
 ChatBot &ChatBot::operator=(ChatBot &&source)
 {
-     std::cout << "Moving the contents of " << &source << " to  " << this << std::endl;
+     std::cout << "Moving the contents of " << &source << " to  " << this <<" using ChatBot Move Assignmnet operator"<< std::endl;
      //do not self move
     if (this == &source) {
         return *this;
@@ -157,6 +157,7 @@ void ChatBot::SetCurrentNode(GraphNode *node)
     std::uniform_int_distribution<int> dis(0, answers.size() - 1);
     std::string answer = answers.at(dis(generator));
 
+    _chatLogic->SetChatbotHandle(this);
     // send selected node answer to user
     _chatLogic->SendMessageToUser(answer);
 }
