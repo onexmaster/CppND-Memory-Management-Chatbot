@@ -29,7 +29,7 @@ ChatBot::ChatBot(std::string filename)
     // load image into heap memory
     _image = new wxBitmap(filename, wxBITMAP_TYPE_PNG);
 }
-
+// destructor
 ChatBot::~ChatBot()
 {
     std::cout << "ChatBot Destructor" << std::endl;
@@ -44,6 +44,70 @@ ChatBot::~ChatBot()
 
 //// STUDENT CODE
 ////
+
+//copy constructor
+ChatBot::ChatBot(const ChatBot &source)
+{
+    std::cout<< "Copying the contents of "<< &source <<" to "<<this<<std::endl;
+    _chatLogic=source._chatLogic;
+    _rootNode=source._rootNode;
+    _image=new wxBitmap(*source._image);
+
+}
+//copy assignment operator
+ChatBot &ChatBot::operator=(const ChatBot &source)
+{
+    std::cout<< "Assigning the contents of "<< &source <<" to "<<this<<std::endl;
+    //do not self assign 
+    if(this == &source)
+        return *this;
+    
+    //delete the image as it has lived before and need to be freed
+    delete _image;
+
+    //do the copying 
+    _chatLogic=source._chatLogic;
+    _rootNode=source._rootNode;
+    _image=new wxBitmap(*source._image);
+
+    return *this;
+}
+
+//move constructor
+ChatBot::ChatBot(ChatBot &&source)
+{
+    std::cout << "Moving the contents of " << &source << " to  " << this << std::endl;
+    //move the contents
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _image = source._image;
+
+    //delete the original contents
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    source._image = nullptr;
+}
+//move assignment operator
+ChatBot &ChatBot::operator=(ChatBot &&source)
+{
+     std::cout << "Moving the contents of " << &source << " to  " << this << std::endl;
+     //do not self move
+    if (this == &source) {
+        return *this;
+    }
+    delete _image;
+    //move the contents
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _image = source._image;
+
+    //delete the original contents
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    source._image = nullptr;
+
+    return *this;
+}
 
 ////
 //// EOF STUDENT CODE
