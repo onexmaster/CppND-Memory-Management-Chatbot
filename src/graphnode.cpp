@@ -27,10 +27,10 @@ void GraphNode::AddEdgeToParentNode(GraphEdge *edge)
 {
     _parentEdges.push_back(edge);
 }
-
-void GraphNode::AddEdgeToChildNode(GraphEdge *edge)
+//holds an owning refrence to child nodes
+void GraphNode::AddEdgeToChildNode(std::unique_ptr<GraphEdge>edge)
 {
-    _childEdges.push_back(edge);
+    _childEdges.push_back(std::move(edge));
 }
 
 //// STUDENT CODE
@@ -54,7 +54,7 @@ GraphEdge *GraphNode::GetChildEdgeAtIndex(int index)
     //// STUDENT CODE
     ////
 
-    return _childEdges[index];
+    return _childEdges[index].get();
 
     ////
     //// EOF STUDENT CODE
